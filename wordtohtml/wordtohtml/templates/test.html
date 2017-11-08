@@ -1,0 +1,19 @@
+<html>
+<head></head>
+<body>
+    <form method="post" action="/wordtohtml/" enctype="multipart/form-data">
+        <input type="file" name="file"/>
+        <input type="submit" value="submit"/>
+    </form>
+    <h3>测试导入word</h3>
+    <form method="post" action="/uploadword/" enctype="multipart/form-data">
+        <input type="file" name="file"/>
+        <input type="submit" value="submit"/>
+    </form>
+    <h3>测试word添加图片:</h3>
+    <form method="post" action="/addimgstoword/" enctype="multipart/form-data">
+        <input type="text" name="imgurls"value='["http://file.say365.xin/wxss/savepaperpieces/XZB2018RASXB0100100/1501839766.011-0_0.png","http://file.say365.xin/wxss/savepaperpieces/XZB2018RASXB0100100/1501839765.692-0_0.png","http://file.say365.xin/wxss/savepaperpieces/XZB2018RASXB0100100/1501839765.583-0_0.png"]'/>
+        <input type="submit" value="submit"/>
+    </form>
+</body>
+</html>
