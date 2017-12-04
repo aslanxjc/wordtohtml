@@ -55,7 +55,7 @@ ROOT_URLCONF = 'wordtohtml.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': ['C:\\WorkSpace\\wordtohtml\\wordtohtml\\templates'],
+        'DIRS': ['c:\\WorkSpace\\wordtohtml\\wordtohtml\\templates'],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [

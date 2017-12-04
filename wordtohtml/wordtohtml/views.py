@@ -8,9 +8,10 @@ from django.shortcuts import render
 from word_to_html import docToHtml,touchHmtl,touchGenHtml
 from .add_image_to_word import add_image_to_word
 from upload_to_oss import MyOSS
+import traceback
 
-filename = "C:\WorkSpace\wordtohtml\upload\shiti.docx"
-filenameout = "C:\WorkSpace\wordtohtml\upload\out\shiti.html"
+filename = "D:\WorkSpace\wordtohtml\wordtohtml\upload\shiti.docx"
+filenameout = "D:\WorkSpace\wordtohtml\wordtohtml\upload\out\shiti.html"
 
 
 def test(request):
@@ -33,27 +34,31 @@ def handle_uploaded_file(f,filename):
     # name = f.name
     # ext = name.split('.')[1]
     # filename = os.path.join(path,"word."+ext)
+
     try:
         with open(filename, 'wb+') as destination:
             for chunk in f.chunks():
                 destination.write(chunk)
+		destination.close()
         return filename
     except Exception,e:
+		
         print e,777777777777777777777
+		#traceback.print_exc()
         return None
 
 @csrf_exempt
 def wordToHtml(request):
     '''
     '''
-    filename = "C:\WorkSpace\wordtohtml\upload\shiti.docx"
-    filenameout = "C:\WorkSpace\wordtohtml\upload\out\shiti.html"
+    filename = "D:\WorkSpace\wordtohtml\wordtohtml\upload\shiti.docx"
+    filenameout = "D:\WorkSpace\wordtohtml\wordtohtml\upload\out\shiti.html"
     ret = {}
     if request.method == "GET":
         return render(request,"test.html",{})
 
     file = request.FILES.get('file',None)
-    
+    print 8888888888888888888888
     print request.FILES,11111
     
     filename = handle_uploaded_file(file,filename)
@@ -125,8 +130,8 @@ def uploadWord(request):
     导入word文件
     '''
     ret = {}
-    filename = "C:\WorkSpace\wordtohtml\upload\shiti.docx"
-    filenameout = "C:\WorkSpace\wordtohtml\upload\out\shiti.html"
+    filename = "D:\WorkSpace\wordtohtml\wordtohtml\upload\shiti.docx"
+    filenameout = "D:\WorkSpace\wordtohtml\wordtohtml\upload\out\shiti.html"
     
     if request.method == "OPTIONS":
         return HttpResponse({})
