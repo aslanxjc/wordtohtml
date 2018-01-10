@@ -52,19 +52,21 @@ def wordToHtml(request):
     '''
     '''
     filename = "D:\WorkSpace\wordtohtml\wordtohtml\upload\shiti.docx"
+    filename = "D:\WorkSpace\wordtohtml\wordtohtml\upload\shiti"
     filenameout = "D:\WorkSpace\wordtohtml\wordtohtml\upload\out\shiti.html"
     ret = {}
     if request.method == "GET":
         return render(request,"test.html",{})
 
     file = request.FILES.get('file',None)
-    print 8888888888888888888888
-    print request.FILES,11111
-    
+    ext = os.path.splitext(file.name)[-1]
+    filename = filename+ext
     filename = handle_uploaded_file(file,filename)
     if filename:
         #word to html
         filenameout = docToHtml(filename,filenameout)
+        
+        #raise Exception
         #touch html
         data_lst = touchHmtl(filenameout)
         
@@ -102,9 +104,9 @@ def addImgsToWord(request):
     
     paper_title = request.POST.get('paper_title','')
     
-    print imgurls,7777777777
+    #print imgurls,7777777777
     tmp_doc = add_image_to_word(imgurls)
-    print tmp_doc,88888888888888888888
+    #print tmp_doc,88888888888888888888
     
     #上传至oss
     myoss = MyOSS()
@@ -131,15 +133,18 @@ def uploadWord(request):
     '''
     ret = {}
     filename = "D:\WorkSpace\wordtohtml\wordtohtml\upload\shiti.docx"
+    filename = "D:\WorkSpace\wordtohtml\wordtohtml\upload\shiti"
     filenameout = "D:\WorkSpace\wordtohtml\wordtohtml\upload\out\shiti.html"
     
     if request.method == "OPTIONS":
         return HttpResponse({})
     file = request.FILES.get('file',None)
-    print file,44444444444444444
+    #print file,44444444444444444
+    ext = os.path.splitext(file.name)[-1]
+    filename = filename+ext
     filename = handle_uploaded_file(file,filename)
     
-    print filename,5555555555555555555
+    #print filename,5555555555555555555
     html_str = ""
     if filename:
         filenameout = docToHtml(filename,filenameout)

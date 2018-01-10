@@ -65,8 +65,8 @@ def touchGenHtml(file="D:\\test.html"):
     '''
     '''
     html_str = ""
-    
-    soup = BeautifulSoup(open(file))
+    content = open(file).read()
+    soup = BeautifulSoup(content,fromEncoding="gb18030")
     print dir(soup)
     #将所有图片转成base64显示
     for _img in soup.find_all("img"):
@@ -75,7 +75,7 @@ def touchGenHtml(file="D:\\test.html"):
         if 'file:///' in src:
             src = src[8:]
         src = "D:\\WorkSpace\\wordtohtml\\wordtohtml\\upload\\out\\"+src
-        print src,888888888888888888888888888
+        #print src,888888888888888888888888888
         base64_str = imgToBase64(src)
         base64_str = "data:image/png;base64," + base64_str
         _img['src'] = base64_str
@@ -92,7 +92,8 @@ def touchGenHtml(file="D:\\test.html"):
 def touchHmtl(file="D:\\test.html"):
     '''
     '''
-    soup = BeautifulSoup(open(file))
+    content = open(file).read()
+    soup = BeautifulSoup(content,fromEncoding="gb18030")
     #将所有图片转成base64显示
     for _img in soup.find_all("img"):
         print _img
@@ -170,19 +171,29 @@ def touchHmtl(file="D:\\test.html"):
                 
                 #提取答案选项
                 da_soup = BeautifulSoup(da_str)
-                das = da_soup.find('u')
+                da_soup = str(da_soup)
+                da_soup = da_soup.replace("<o:p></o:p>","")
+                
+                da_soup = BeautifulSoup(da_soup)
+                
+                das = da_soup.find_all('span')
+                #print type(da_soup.text)
+                das = da_soup.text.strip().replace("<o:p></o:p>","").split("、".decode("gb2312").encode("utf-8"))
+                #das = da_soup.text.strip().replace("<o:p></o:p>","").split(u"、")
 
                 #da_lst = []
                 for _d in das:
-                    da_lst.append(_d.contents[0])
-                    with open('a.txt','a+') as f:
-                        f.write(str(_d))
-                        f.close()
+                    da_lst.append(_d.strip())
+                    #da_lst.append(_d.text)
+                    #da_lst.append(_d.contents[0])
+                    #with open('a.txt','a+') as f:
+                    #    f.write(str(_d))
+                    #    f.close()
 
         tmp_dct["tg_str"] = tg_str.replace("<?if !vml?>","<!--[if !vml]-->").replace("<?endif?>","<!--[endif]-->")
         tmp_dct["jx_str"] = jx_str
         tmp_dct["da_str"] = da_lst
-        tmp_dct["test_str"] = test_str
+        tmp_dct["test_str"] = da_str
         
         data_lst.append(tmp_dct)
     #删除目录
@@ -198,23 +209,23 @@ def docToHtml(filename,filenameout):
     '''
     #w = win32com.client.DispatchEx('Word.Application')
     try:
-	            pythoncom.CoInitialize()
-		    w = win32com.client.Dispatch('Word.Application')
-		    w.Visible = 0
-		    w.DisplayAlerts = 0
-		    doc = w.Documents.Open( FileName = filename )
-		    wc = win32com.client.constants
-		    w.ActiveDocument.WebOptions.RelyOnCSS = 0
-		    w.ActiveDocument.WebOptions.OptimizeForBrowser = 0
-		    w.ActiveDocument.WebOptions.BrowserLevel = 0 # constants.wdBrowserLevelV4
-		    w.ActiveDocument.WebOptions.OrganizeInFolder = 0
-		    w.ActiveDocument.WebOptions.UseLongFileNames = 1
-		    w.ActiveDocument.WebOptions.RelyOnVML = 0
-		    w.ActiveDocument.WebOptions.AllowPNG = 0
-		    w.ActiveDocument.SaveAs( FileName = filenameout, FileFormat = 8 )
-		    doc.Close()
+        pythoncom.CoInitialize()
+        w = win32com.client.Dispatch('Word.Application')
+        w.Visible = 0
+        w.DisplayAlerts = 0
+        doc = w.Documents.Open( FileName = filename )
+        wc = win32com.client.constants
+        w.ActiveDocument.WebOptions.RelyOnCSS = 0
+        w.ActiveDocument.WebOptions.OptimizeForBrowser = 0
+        w.ActiveDocument.WebOptions.BrowserLevel = 0 # constants.wdBrowserLevelV4
+        w.ActiveDocument.WebOptions.OrganizeInFolder = 0
+        w.ActiveDocument.WebOptions.UseLongFileNames = 1
+        w.ActiveDocument.WebOptions.RelyOnVML = 0
+        w.ActiveDocument.WebOptions.AllowPNG = 0
+        w.ActiveDocument.SaveAs( FileName = filenameout, FileFormat = 8 )
+        doc.Close()
     except Exception,e:
-		    traceback.print_exc()
+        traceback.print_exc()
     #w.Documents.Close(0)
     #w.quit()
     return filenameout
